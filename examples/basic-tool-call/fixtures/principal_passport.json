@@ -1,0 +1,8 @@
+{
+  "_note": "Placeholder. Regenerate with the seeded Passport.create command in fixtures/README.md before running the example against a real APS SDK install.",
+  "agent_id": "aps:test:principal",
+  "public_key": "REPLACE_ME",
+  "private_key": "REPLACE_ME",
+  "scope": ["tool:search", "tool:http_get"],
+  "spend_limit_usd": 10.0
+}
