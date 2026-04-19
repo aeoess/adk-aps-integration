@@ -1,8 +1,44 @@
 {
-  "_note": "Placeholder. Regenerate with the seeded Passport.create command in fixtures/README.md before running the example against a real APS SDK install.",
-  "agent_id": "aps:test:principal",
-  "public_key": "REPLACE_ME",
-  "private_key": "REPLACE_ME",
-  "scope": ["tool:search", "tool:http_get"],
-  "spend_limit_usd": 10.0
+  "signedPassport": {
+    "passport": {
+      "version": "1.0.0",
+      "agentId": "aps:test:adk-principal",
+      "agentName": "ADK Example Principal",
+      "ownerAlias": "adk-aps-integration-tests",
+      "publicKey": "88d7d2a5862ba92ab3be7ae5947f580389b6732f027b7620fc6ee01c99a0f601",
+      "mission": "Root principal for the basic-tool-call example. Test material only.",
+      "capabilities": [
+        "tool:search",
+        "tool:http_get"
+      ],
+      "runtime": {
+        "platform": "python",
+        "models": [
+          "test"
+        ],
+        "toolsCount": 2,
+        "memoryType": "session"
+      },
+      "createdAt": "2026-04-19T00:14:55.025329+00:00",
+      "expiresAt": "2036-04-16T00:14:55.025329+00:00",
+      "voteWeight": 1,
+      "reputation": {
+        "overall": 1,
+        "collaborationsCompleted": 0,
+        "proposalsSubmitted": 0,
+        "proposalsApproved": 0,
+        "tokensContributed": 0,
+        "tasksCompleted": 0,
+        "lastUpdated": "2026-04-19T00:14:55.025962+00:00"
+      },
+      "delegations": [],
+      "metadata": {}
+    },
+    "signature": "32a72a9367b51d1fb7f05f47e3edcc7428b33f7eeee5d88019ee61ad384d37921fc204db61be82ed79e2cfdcdd1abeb90f7e870023ed20c4355f116a41be7603",
+    "signedAt": "2026-04-19T00:14:55.026862+00:00"
+  },
+  "keyPair": {
+    "privateKey": "03e2d5ef7b92bab3947861192e2a6e1de39ed381f899d259528c9a50e90d7698",
+    "publicKey": "88d7d2a5862ba92ab3be7ae5947f580389b6732f027b7620fc6ee01c99a0f601"
+  }
 }

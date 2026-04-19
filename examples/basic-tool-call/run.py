@@ -1,4 +1,8 @@
-"""End-to-end walk-through: delegation → tool call → receipt → verify."""
+"""End-to-end walk-through: delegation → tool call → receipt → bundle.
+
+Run with: ``python run.py``. Produces ``receipts/bundle.json`` ready
+for ``../../verify.sh receipts/`` to gate on.
+"""
 
 from __future__ import annotations
 
@@ -11,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from aps_delegation import build_delegation_chain  # noqa: E402
-from receipt_signing import sign_tool_call  # noqa: E402
+from receipt_signing import sign_tool_call, write_audit_bundle  # noqa: E402
 
 
 @dataclass
@@ -33,15 +37,30 @@ def main() -> None:
         output_dir=here / "delegations",
     )
 
-    tool_context = FakeToolContext(
-        tool_name="search",
-        args={"query": "ADK receipt signing example", "limit": 3},
-        invocation_id="inv-0001",
-    )
+    calls = [
+        FakeToolContext(
+            tool_name="search",
+            args={"query": "ADK receipt signing example", "limit": 3},
+            invocation_id="inv-0001",
+        ),
+        FakeToolContext(
+            tool_name="search",
+            args={"query": "monotonic narrowing in delegation chains", "limit": 5},
+            invocation_id="inv-0002",
+        ),
+    ]
 
-    receipt = sign_tool_call(tool_context, delegation=chain)
-    path = receipt.write_to(here / "receipts")
-    print(f"signed receipt: {path}")
+    receipts = [sign_tool_call(c, delegation=chain) for c in calls]
+    bundle_path = write_audit_bundle(
+        receipts=receipts,
+        delegation=chain,
+        output_path=here / "receipts" / "bundle.json",
+        description=(
+            f"ADK basic-tool-call example: {len(receipts)} call(s) under "
+            f"delegation {chain.delegation_id}"
+        ),
+    )
+    print(f"audit bundle: {bundle_path} ({len(receipts)} receipts)")
 
 
 if __name__ == "__main__":

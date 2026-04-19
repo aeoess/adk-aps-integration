@@ -9,8 +9,9 @@ signed receipt, verify it.
    (`fixtures/principal_passport.json`) down to a fresh session agent.
 2. It calls a fake `search` tool via a `FakeToolContext` object shaped
    like ADK's `ToolContext`.
-3. `receipt_signing.sign_tool_call` produces a signed receipt and writes
-   it to `receipts/`.
+3. `receipt_signing.sign_tool_call` signs each tool call as a v2
+   verify-artifact envelope, and `write_audit_bundle` rolls them into
+   `receipts/bundle.json` along with the leaf agent's public JWK.
 4. The included `../../verify.sh` is then run against `receipts/` and
    must exit 0.
 
@@ -30,6 +31,6 @@ on `google-adk` being installed. Swap `FakeToolContext` for a real
 
 ## Exit codes from verify.sh
 
-- `0` — every receipt signature verifies and the chain is intact
-- `1` — at least one signature failed
-- `2` — chain has a gap (a receipt references an unknown parent)
+- `0` — bundle signature(s) valid (every receipt verifies)
+- `1` — at least one receipt failed signature check
+- `3` — usage error or malformed bundle

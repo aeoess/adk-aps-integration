@@ -7,24 +7,23 @@ on:
 
 jobs:
   matrix:
-    name: aps=${{ matrix.aps }} verify=${{ matrix.verify }}
+    name: py=${{ matrix.python }} aps=${{ matrix.aps }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        python: ["3.10", "3.11", "3.12"]
         aps:
-          - "agent-passport-system"              # PyPI latest
-          - "agent-passport-system @ git+https://github.com/aeoess/agent-passport-python@next"
-          - "agent-passport-system==2.0.0b0"
+          - "agent-passport-system"            # PyPI latest
+          - "agent-passport-system==2.0.0b0"   # next-gen beta on PyPI
         verify:
-          - "@veritasacta/verify@0.3.0"
-          - "@veritasacta/verify@latest"
+          - "@veritasacta/verify@0.3.0"        # latest === 0.3.0 today
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python }}
 
       - uses: actions/setup-node@v4
         with:
@@ -33,7 +32,7 @@ jobs:
       - name: Install APS SDK (${{ matrix.aps }})
         run: pip install "${{ matrix.aps }}"
 
-      - name: Install verifier (${{ matrix.verify }})
+      - name: Pre-cache verifier (${{ matrix.verify }})
         run: npm install --no-save "${{ matrix.verify }}"
 
       - name: Run basic-tool-call example
