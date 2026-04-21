@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, integration-skeleton]
+    branches: [main, integration-skeleton, feat/protect-mcp-adk-composition]
   pull_request:
 
 jobs:
@@ -32,13 +32,26 @@ jobs:
       - name: Install APS SDK (${{ matrix.aps }})
         run: pip install "${{ matrix.aps }}"
 
+      - name: Install protect-mcp-adk
+        run: pip install protect-mcp-adk
+
       - name: Pre-cache verifier (${{ matrix.verify }})
         run: npm install --no-save "${{ matrix.verify }}"
 
+      # ── Example 1: basic-tool-call (APS-only signing) ─────────────────
       - name: Run basic-tool-call example
         working-directory: examples/basic-tool-call
         run: python run.py
 
-      - name: Verify receipts
+      - name: Verify basic-tool-call receipts
         working-directory: examples/basic-tool-call
+        run: ../../verify.sh receipts/
+
+      # ── Example 2: full-composition (APS delegation + protect-mcp-adk) ─
+      - name: Run full-composition example
+        working-directory: examples/full-composition
+        run: python run.py
+
+      - name: Verify full-composition receipts
+        working-directory: examples/full-composition
         run: ../../verify.sh receipts/
