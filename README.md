@@ -1,3 +1,5 @@
+> Archived 2026-09-02. The integration skeleton never reached main; ADK support, if it returns, will live with the SDK integrations in agent-passport-system.
+
 # adk-aps-integration
 
 APS integration for Google's [Agent Development Kit](https://github.com/google/adk-python).
